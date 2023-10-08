@@ -1,0 +1,157 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+body {
+  color: black;
+  background: rgba(172, 172, 172, 1) ;
+}
+
+/* Base font size for the entire document */
+body {
+  font-size: 14px;
+}
+
+/* Font sizes for mobile devices (default) */
+p {
+  font-size: 1em;
+}
+
+h1 {
+  font-size: 1.5em;
+}
+
+h2 {
+  font-size: 1.25em;
+}
+
+/* Font sizes for tablets (example) */
+@media (min-width: 768px) {
+  body {
+    font-size: 16px; /* Increase base font size for tablets */
+  }
+
+  p {
+    font-size: 1em;
+  }
+
+  h1 {
+    font-size: 1.5em;
+  }
+
+  h2 {
+    font-size: 1.25em;
+  }
+}
+
+/* Font sizes for desktops (example) */
+@media (min-width: 1024px) {
+  body {
+    font-size: 18px; /* Increase base font size for desktops */
+  }
+
+  p {
+    font-size: 1em;
+  }
+
+  h1 {
+    font-size: 1.5em;
+  }
+
+  h2 {
+    font-size: 1.25em;
+  }
+}
+
+
+.checkbox-coral{
+  --chkbg: 3 89% 64%; /* HSL color values for black */
+  --chkfg: 0 0% 100%; /* HSL color values for yellow */
+}
+
+.qrImg {
+  --s: 40px; /* the size on the corner */
+  --t: 6px;  /* the thickness of the border */
+  --g: 10px; /* the gap between the border and image */
+  
+  padding: calc(var(--g) + var(--t));
+  outline: var(--t) solid #000000; /* the color here */
+  outline-offset: calc(-1*var(--t));
+  -webkit-mask:
+    conic-gradient(at var(--s) var(--s),#00000000 75%,#000 0)
+    0 0/calc(100% - var(--s)) calc(100% - var(--s)),
+    linear-gradient(#000000 0 0) content-box;
+  transition: .4s;
+}
+
+.progress:indeterminate {
+  background-position-x: 20%;
+  animation: custom-progress-loading 1.5s infinite;
+}
+.progress:indeterminate::-moz-progress-bar {
+  background-position-x: 20%;
+  animation: custom-progress-loading 1.5s infinite;
+}
+
+@keyframes custom-progress-loading {
+  100% {
+    background-position-x: -140%;
+  }
+}
+
+.triangle {
+	position: relative;
+  filter: drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.4));
+}
+.triangle:before,
+.triangle:after {
+	content: '';
+	position: absolute;
+	background-color: inherit;
+}
+.triangle,
+.triangle:before,
+.triangle:after {
+	width:  3em;
+	height: 3em;
+	border-top-right-radius: 30%;
+}
+
+.triangle {
+	transform: rotate(-60deg) skewX(-30deg) scale(1,.866);
+}
+.triangle:before {
+	transform: rotate(-135deg) skewX(-45deg) scale(1.414,.707) translate(0,-50%);
+}
+.triangle:after {
+	transform: rotate(135deg) skewY(-45deg) scale(.707,1.414) translate(50%);
+}
+
+
+.triangle2 {
+  position: relative;
+  filter: drop-shadow(1px -1px 4px rgba(0, 0, 0, 0.4));
+  transform: rotate(-60deg) skewX(-30deg) scale(1, .866) rotate(180deg);
+}
+.triangle2:before,
+.triangle2:after {
+  content: '';
+  position: absolute;
+  background-color: inherit;
+}
+
+.triangle2,
+.triangle2:before,
+.triangle2:after {
+  width: 3em;
+  height: 3em;
+  border-top-right-radius: 30%;
+}
+
+.triangle2:before {
+  transform: rotate(-135deg) skewX(-45deg) scale(1.414, .707) translate(0, -50%);
+}
+.triangle2:after {
+  transform: rotate(135deg) skewY(-45deg) scale(.707, 1.414) translate(50%);
+}
