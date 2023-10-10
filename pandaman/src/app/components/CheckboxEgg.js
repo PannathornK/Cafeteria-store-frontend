@@ -1,6 +1,5 @@
-import React from 'react';
-import { useAtom } from 'jotai'
-import { atom } from 'jotai'
+import React, { useEffect } from 'react';
+import { atom, useAtom } from 'jotai';
 
 const checkboxEggAtom1 = atom(false);
 const checkboxEggAtom2 = atom(false);
@@ -17,6 +16,28 @@ const CheckboxEgg = () => {
     setIsChecked2(!isChecked2);
   };
 
+  useEffect(() => {
+    const savedCheckboxState1 = localStorage.getItem('checkboxEggState1');
+    if (savedCheckboxState1) {
+      setIsChecked1(savedCheckboxState1 === 'true');
+    }
+  }, []);
+
+  useEffect(() => {
+    const savedCheckboxState2 = localStorage.getItem('checkboxEggState2');
+    if (savedCheckboxState2) {
+      setIsChecked2(savedCheckboxState2 === 'true');
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('checkboxEggState1', isChecked1);
+  }, [isChecked1]);
+
+  useEffect(() => {
+    localStorage.setItem('checkboxEggState2', isChecked2);
+  }, [isChecked2]);
+
   return (
     <div className="form-control">
       <label className="label cursor-pointer">
@@ -30,6 +51,9 @@ const CheckboxEgg = () => {
           <p className="pl-4">ไข่ดาว</p>
         </div>
       </label>
+
+      <div className="divider m-0"></div>
+
       <label className="label cursor-pointer">
         <div className="flex flex-row">
           <input

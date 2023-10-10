@@ -1,68 +1,148 @@
 import React, { useEffect } from 'react';
 import { atom, useAtom } from 'jotai';
 
-export const checkboxEggAtom = atom(false);
+const radioIngredientAtom = atom('');
 
-const CheckboxEgg = () => {
-  const [isChecked1, setIsChecked1] = useAtom(checkboxEggAtom);
-  const [isChecked2, setIsChecked2] = useAtom(checkboxEggAtom);
+const RadioIngredient = () => {
+  const [selectedRadio, setSelectedRadio] = useAtom(radioIngredientAtom);
 
-  const handleCheckboxChange1 = () => {
-    setIsChecked1(!isChecked1);
-  };
-
-  const handleCheckboxChange2 = () => {
-    setIsChecked2(!isChecked2);
+  const handleRadioChange = (event) => {
+    setSelectedRadio(event.target.value);
   };
 
   useEffect(() => {
-    const savedCheckboxState1 = localStorage.getItem('checkboxEggState1');
-    if (savedCheckboxState1) {
-      setIsChecked1(savedCheckboxState1 === 'true');
+    const savedRadioState = localStorage.getItem('radioIngredientState');
+    if (savedRadioState) {
+      setSelectedRadio(savedRadioState);
     }
   }, []);
 
   useEffect(() => {
-    const savedCheckboxState2 = localStorage.getItem('checkboxEggState2');
-    if (savedCheckboxState2) {
-      setIsChecked2(savedCheckboxState2 === 'true');
-    }
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem('checkboxEggState1', isChecked1);
-  }, [isChecked1]);
-
-  useEffect(() => {
-    localStorage.setItem('checkboxEggState2', isChecked2);
-  }, [isChecked2]);
+    localStorage.setItem('radioIngredientState', selectedRadio);
+  }, [selectedRadio]);
 
   return (
     <div className="form-control">
       <label className="label cursor-pointer">
         <div className="flex flex-row">
           <input
-            type="checkbox"
-            className="checkbox checkbox-coral checked:bg-coral"
-            checked={isChecked1}
-            onChange={handleCheckboxChange1}
+            type="radio"
+            value="radio1"
+            name="radio-1"
+            className="radio checked:bg-coral"
+            checked={selectedRadio === 'radio1'}
+            onChange={handleRadioChange}
           />
-          <p className="pl-4">ไข่ดาว</p>
+          <p className="pl-4">หมู</p>
         </div>
+        <span className="label-text flex flex-row items-end">
+          <p className="text-gray-500">฿</p>
+          <p className="font-bold pl-1">0</p>
+        </span>
       </label>
+
+      <div className="divider m-0"></div>
+
       <label className="label cursor-pointer">
         <div className="flex flex-row">
           <input
-            type="checkbox"
-            className="checkbox checkbox-coral checked:bg-coral"
-            checked={isChecked2}
-            onChange={handleCheckboxChange2}
+            type="radio"
+            value="radio2"
+            name="radio-2"
+            className="radio checked:bg-coral"
+            checked={selectedRadio === 'radio2'}
+            onChange={handleRadioChange}
           />
-          <p className="pl-4">ไข่เจียว</p>
+          <p className="pl-4">ไก่</p>
         </div>
+        <span className="label-text flex flex-row items-end">
+          <p className="text-gray-500">฿</p>
+          <p className="font-bold pl-1">0</p>
+        </span>
       </label>
+
+      <div className="divider m-0"></div>
+
+      <label className="label cursor-pointer">
+        <div className="flex flex-row">
+          <input
+            type="radio"
+            value="radio3"
+            name="radio-3"
+            className="radio checked:bg-coral"
+            checked={selectedRadio === 'radio3'}
+            onChange={handleRadioChange}
+          />
+          <p className="pl-4">หมูกรอบ</p>
+        </div>
+        <span className="label-text flex flex-row items-end">
+          <p className="text-gray-500">฿</p>
+          <p className="font-bold pl-1">5</p>
+        </span>
+      </label>
+
+      <div className="divider m-0"></div>
+
+      <label className="label cursor-pointer">
+        <div className="flex flex-row">
+          <input
+            type="radio"
+            value="radio4"
+            name="radio-4"
+            className="radio checked:bg-coral"
+            checked={selectedRadio === 'radio4'}
+            onChange={handleRadioChange}
+          />
+          <p className="pl-4">เบค่อน</p>
+        </div>
+        <span className="label-text flex flex-row items-end">
+          <p className="text-gray-500">฿</p>
+          <p className="font-bold pl-1">5</p>
+        </span>
+      </label>
+
+      <div className="divider m-0"></div>
+
+<label className="label cursor-pointer">
+  <div className="flex flex-row">
+    <input
+      type="radio"
+      value="radio5"
+      name="radio-5"
+      className="radio checked:bg-coral"
+      checked={selectedRadio === 'radio5'}
+      onChange={handleRadioChange}
+    />
+    <p className="pl-4">กุ้ง</p>
+  </div>
+  <span className="label-text flex flex-row items-end">
+          <p className="text-gray-500">฿</p>
+          <p className="font-bold pl-1">10</p>
+        </span>
+</label>
+
+<div className="divider m-0"></div>
+
+      <label className="label cursor-pointer">
+        <div className="flex flex-row">
+          <input
+            type="radio"
+            value="radio6"
+            name="radio-6"
+            className="radio checked:bg-coral"
+            checked={selectedRadio === 'radio6'}
+            onChange={handleRadioChange}
+          />
+          <p className="pl-4">ปลาหมึก</p>
+        </div>
+        <span className="label-text flex flex-row items-end">
+          <p className="text-gray-500">฿</p>
+          <p className="font-bold pl-1">10</p>
+        </span>
+      </label>
+
     </div>
   );
 };
 
-export default CheckboxEgg;
+export default RadioIngredient;

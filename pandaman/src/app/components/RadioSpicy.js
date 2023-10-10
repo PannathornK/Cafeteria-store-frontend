@@ -27,10 +27,10 @@ const RadioSpicy = () => {
         <div className="flex flex-row">
           <input
             type="radio"
-            value="radio1"
-            name="radio-1"
+            value="radio7"
+            name="radio-7"
             className="radio checked:bg-coral"
-            checked={selectedRadio === 'radio1'}
+            checked={selectedRadio === 'radio7'}
             onChange={handleRadioChange}
           />
           <p className="pl-4">ไม่เผ็ด</p>
@@ -43,10 +43,10 @@ const RadioSpicy = () => {
         <div className="flex flex-row">
           <input
             type="radio"
-            value="radio2"
-            name="radio-2"
+            value="radio8"
+            name="radio-8"
             className="radio checked:bg-coral"
-            checked={selectedRadio === 'radio2'}
+            checked={selectedRadio === 'radio8'}
             onChange={handleRadioChange}
           />
           <p className="pl-4">เผ็ดน้อย</p>
@@ -59,10 +59,10 @@ const RadioSpicy = () => {
         <div className="flex flex-row">
           <input
             type="radio"
-            value="radio3"
-            name="radio-3"
+            value="radio9"
+            name="radio-9"
             className="radio checked:bg-coral"
-            checked={selectedRadio === 'radio3'}
+            checked={selectedRadio === 'radio9'}
             onChange={handleRadioChange}
           />
           <p className="pl-4">เผ็ดปกติ</p>
@@ -75,10 +75,10 @@ const RadioSpicy = () => {
         <div className="flex flex-row">
           <input
             type="radio"
-            value="radio4"
-            name="radio-4"
+            value="radio10"
+            name="radio-10"
             className="radio checked:bg-coral"
-            checked={selectedRadio === 'radio4'}
+            checked={selectedRadio === 'radio10'}
             onChange={handleRadioChange}
           />
           <p className="pl-4">เผ็ดมาก</p>

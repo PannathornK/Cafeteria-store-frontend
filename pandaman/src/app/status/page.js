@@ -130,7 +130,7 @@ export default function status() {
 
 </div>
 
-<div className='relative flex flex-col w-full bg-white my-4 p-4'>
+<div className='relative flex flex-col w-full bg-white mt-4 p-4'>
   <h1 className='font-bold'>สรุปคำสั่งซื้อ</h1>
 
   <div className="flex flex-row flex-wrap justify-between w-full p-4">
@@ -162,14 +162,6 @@ export default function status() {
 
 
 
-<div className="sticky bottom-0 w-full bg-white">
-  <div className="divider m-0 p-0 h-0"></div> 
-  <div className="flex flex-col px-6 py-4 text-center items-center">
-    <button className="btn btn-error bg-coral text-white w-full" onClick={cancelOrder}>
-      <p className="font-bold">ยกเลิกคำสั่งซื้อ</p>
-    </button>
-  </div>
-</div>
 </main>
   )
 }

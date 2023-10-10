@@ -10,14 +10,15 @@ import RadioIngredient from '../components/RadioIngredient';
 import RadioSpicy from '../components/RadioSpicy';
 import CheckboxExtra from '../components/CheckboxExtra';
 import CheckboxEgg from '../components/CheckboxEgg';
+import RadioContainer from '../components/RadioContainer';
 
-export default function krapow() {
+export default function foodOption() {
   const showQueue = () => {
     document.getElementById('queueModal').showModal();
   };
   return (
     <main className="flex min-h-screen flex-col items-center bg-background">
-        <div className="navbar p-4 bg-white w-full flex flex-row drop-shadow-xl z-50">
+        <div className="sticky top-0 navbar p-4 bg-white w-full flex flex-row drop-shadow-xl z-50">
         <div className="flex flex-row flex-wrap w-full justify-between">
           <div className="flex flex-row items-center">
             <a href='/'>
@@ -45,7 +46,7 @@ export default function krapow() {
             </div>
           </div>
         </div>
-        
+        </div>
         <dialog id="queueModal" className="modal">
   <div className="modal-box bg-white flex flex-col p-0 w-full h-3/4">
     <form method="dialog">
@@ -111,8 +112,6 @@ export default function krapow() {
   </div>
 </dialog>
 
-      </div>
-
     <div className="relative flex flex-col w-full bg-white ">
   <figure><img className="h-48 w-full object-cover" src="/food.jpg" alt="krapow" /></figure>
   <div className="flex flex-row items-center justify-between w-full px-6 py-4">
@@ -163,23 +162,7 @@ export default function krapow() {
     <p className="font-bold">ภาชนะ</p> <p className="pl-2 text-sm">Required, select 1</p>
   </div>
   <div className="form-control">
-  <label className="label cursor-pointer">
-    <div className="flex flex-row">
-    <input type="radio" name="radio-1" className="radio checked:bg-coral"/>
-    <p className="pl-4">ใส่จาน</p>
-    </div>
-    <span className="label-text flex flex-row items-end"> <p className="text-gray-500">฿</p> <p className="font-bold pl-1">0</p> </span> 
-  </label>
-
-<div className="divider m-0"></div> 
-
- <label className="label cursor-pointer">
-    <div className="flex flex-row">
-    <input type="radio" name="radio-2" className="radio checked:bg-coral"/>
-    <p className="pl-4">ใส่กล่อง</p>
-    </div>
-    <span className="label-text flex flex-row items-end"> <p className="text-gray-500">฿</p> <p className="font-bold pl-1">5</p> </span> 
-  </label>
+  <RadioContainer/>
 </div>
 
 </div>
