@@ -1,25 +1,20 @@
-import React, { useEffect } from 'react';
 import { atom, useAtom } from 'jotai';
 
-const radioIngredientAtom = atom('');
+const selectedRadioAtom = atom();
 
 const RadioIngredient = () => {
-  const [selectedRadio, setSelectedRadio] = useAtom(radioIngredientAtom);
+  const [selectedRadio, setSelectedRadio] = useAtom(selectedRadioAtom);
 
   const handleRadioChange = (event) => {
-    setSelectedRadio(event.target.value);
+    const value = event.target.value;
+    setSelectedRadio(prevSelectedRadio => {
+      if (prevSelectedRadio.includes(value)) {
+        return prevSelectedRadio.filter(item => item !== value);
+      } else {
+        return [...prevSelectedRadio, value];
+      }
+    });
   };
-
-  useEffect(() => {
-    const savedRadioState = localStorage.getItem('radioIngredientState');
-    if (savedRadioState) {
-      setSelectedRadio(savedRadioState);
-    }
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem('radioIngredientState', selectedRadio);
-  }, [selectedRadio]);
 
   return (
     <div className="form-control">
@@ -27,10 +22,10 @@ const RadioIngredient = () => {
         <div className="flex flex-row">
           <input
             type="radio"
-            value="radio1"
+            value="pork"
             name="radio-1"
             className="radio checked:bg-coral"
-            checked={selectedRadio === 'radio1'}
+            checked={selectedRadio === 'pork'}
             onChange={handleRadioChange}
           />
           <p className="pl-4">หมู</p>
@@ -47,10 +42,10 @@ const RadioIngredient = () => {
         <div className="flex flex-row">
           <input
             type="radio"
-            value="radio2"
+            value="chicken"
             name="radio-2"
             className="radio checked:bg-coral"
-            checked={selectedRadio === 'radio2'}
+            checked={selectedRadio === 'chicken'}
             onChange={handleRadioChange}
           />
           <p className="pl-4">ไก่</p>
@@ -67,10 +62,10 @@ const RadioIngredient = () => {
         <div className="flex flex-row">
           <input
             type="radio"
-            value="radio3"
+            value="crispyPork"
             name="radio-3"
             className="radio checked:bg-coral"
-            checked={selectedRadio === 'radio3'}
+            checked={selectedRadio === 'crispyPork'}
             onChange={handleRadioChange}
           />
           <p className="pl-4">หมูกรอบ</p>
@@ -87,10 +82,10 @@ const RadioIngredient = () => {
         <div className="flex flex-row">
           <input
             type="radio"
-            value="radio4"
+            value="bacon"
             name="radio-4"
             className="radio checked:bg-coral"
-            checked={selectedRadio === 'radio4'}
+            checked={selectedRadio === 'bacon'}
             onChange={handleRadioChange}
           />
           <p className="pl-4">เบค่อน</p>
@@ -107,10 +102,10 @@ const RadioIngredient = () => {
   <div className="flex flex-row">
     <input
       type="radio"
-      value="radio5"
+      value="shrimp"
       name="radio-5"
       className="radio checked:bg-coral"
-      checked={selectedRadio === 'radio5'}
+      checked={selectedRadio === 'shrimp'}
       onChange={handleRadioChange}
     />
     <p className="pl-4">กุ้ง</p>
@@ -127,10 +122,10 @@ const RadioIngredient = () => {
         <div className="flex flex-row">
           <input
             type="radio"
-            value="radio6"
+            value="squid"
             name="radio-6"
             className="radio checked:bg-coral"
-            checked={selectedRadio === 'radio6'}
+            checked={selectedRadio === 'squid'}
             onChange={handleRadioChange}
           />
           <p className="pl-4">ปลาหมึก</p>

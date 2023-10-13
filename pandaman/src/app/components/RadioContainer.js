@@ -27,10 +27,10 @@ const RadioContainer = () => {
         <div className="flex flex-row">
           <input
             type="radio"
-            value="radio11"
+            value="plate"
             name="radio-11"
             className="radio checked:bg-coral"
-            checked={selectedRadio === 'radio11'}
+            checked={selectedRadio === 'plate'}
             onChange={handleRadioChange}
           />
           <p className="pl-4">ใส่จาน</p>
@@ -43,10 +43,10 @@ const RadioContainer = () => {
         <div className="flex flex-row">
           <input
             type="radio"
-            value="radio12"
+            value="box"
             name="radio-12"
             className="radio checked:bg-coral"
-            checked={selectedRadio === 'radio12'}
+            checked={selectedRadio === 'box'}
             onChange={handleRadioChange}
           />
           <p className="pl-4">ใส่กล่อง</p>
