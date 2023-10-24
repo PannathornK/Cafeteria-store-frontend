@@ -50,6 +50,10 @@ const CheckboxEgg = () => {
           />
           <p className="pl-4">ไข่ดาว</p>
         </div>
+          <span className="label-text flex flex-row items-end">
+          <p className="text-gray-500">฿</p>
+          <p className="font-bold pl-1">5</p>
+        </span>
       </label>
 
       <div className="divider m-0"></div>
@@ -64,6 +68,10 @@ const CheckboxEgg = () => {
           />
           <p className="pl-4">ไข่เจียว</p>
         </div>
+        <span className="label-text flex flex-row items-end">
+          <p className="text-gray-500">฿</p>
+          <p className="font-bold pl-1">10</p>
+        </span>
       </label>
     </div>
   );

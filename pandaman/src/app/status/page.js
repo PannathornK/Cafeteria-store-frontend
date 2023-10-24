@@ -107,30 +107,30 @@ export default function status() {
 
       </div>
     
-      <video className='h-48 w-full object-contain' src='/approve.mp4' preload="auto" loop autoPlay muted></video>
+      <video className='h-48 w-full object-contain' src='/complete.mp4' preload="auto" loop autoPlay muted></video>
 
       <div className="relative flex flex-col h-auto bg-white p-4 w-full">
       <h2 className='font-bold'>สถานะคำสั่งซื้อของออเดอร์ 001 :</h2>
-      <h1 className='font-bold text-green-500'>ได้รับคำสั่งซื้อแล้ว</h1>
+      <h1 className='font-bold text-green-600'>ออเดอร์ของคุณเสร็จแล้ว</h1>
 
       <div className='join join-horizontal p-4 items-center justify-between'>
-      <div className='flex w-16 h-16 rounded bg-coral items-center justify-center'>
-        <img src='/approve-active.svg' className='w-8 h-8'></img>
+      <div className='flex w-16 h-16 rounded bg-statusbg items-center justify-center'>
+        <img src='/approve-done.svg' className='w-8 h-8'></img>
         </div>
-        <progress className="progress progress-error w-10 rounded bg-statusbg border-2 border-statusbg"></progress>
+        <progress className="progress progress-error w-10 rounded bg-statusbg border-2 border-statusbg" value={100}></progress>
         <div className='flex w-16 h-16 rounded bg-statusbg items-center justify-center'>
-        <img src='/cooking.svg' className='w-8 h-8'></img>
+        <img src='/cooking-done.svg' className='w-8 h-8'></img>
         </div>
-        <progress className="progress w-10 rounded bg-statusbg" value={0} max="100"></progress>
-        <div className='flex w-16 h-16 rounded bg-statusbg items-center justify-center'>
-        <img src='/bell.svg' className='w-8 h-8'></img>
+        <progress className="progress progress-error w-10 rounded bg-statusbg border-2 border-statusbg" value={100}></progress>
+        <div className='flex w-16 h-16 rounded bg-coral items-center justify-center'>
+        <img src='/bell-active.svg' className='w-8 h-8'></img>
         </div>
       </div>
       <h1 className='font-bold'>คิวก่อนหน้า : 2</h1>
 
 </div>
 
-<div className='relative flex flex-col w-full bg-white mt-4 p-4'>
+<div className='relative flex flex-col w-full h-80 bg-white mt-4 p-4'>
   <h1 className='font-bold'>สรุปคำสั่งซื้อ</h1>
 
   <div className="flex flex-row flex-wrap justify-between w-full p-4">
@@ -161,7 +161,14 @@ export default function status() {
 </dialog>
 
 
-
+<div className="sticky bottom-0 w-full bg-white mt-auto">
+  <div className="divider m-0 p-0 h-0"></div> 
+  <div className="flex flex-col px-6 py-4 text-center items-center">
+    <button className="btn bg-coral text-white w-full" onClick={cancelOrder}>
+      <p className="font-bold">กลับไปหน้าแรก</p>
+    </button>
+  </div>
+</div>
 </main>
   )
 }

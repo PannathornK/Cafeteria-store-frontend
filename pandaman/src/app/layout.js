@@ -1,6 +1,6 @@
 import './globals.css'
 import { Kanit } from 'next/font/google'
-import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+
 
 const kanit = Kanit({ 
   weight: '300',

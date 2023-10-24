@@ -37,17 +37,24 @@ export default function krapow() {
     </tr>
     <tr className="hover">
       <th>2</th>
-      <td>กระเพรา หมู</td>
-      <td>ไข่ดาว 2 , พิเศษ 3</td>
+      <td>ข้าวผัด หมูกรอบ</td>
+      <td>พิเศษ 2</td>
       <td>4</td>
       <td>กำลังทำ</td>
     </tr>
     <tr className="hover">
       <th>3</th>
-      <td>กระเพรา หมู</td>
-      <td>ไข่ดาว 2 , พิเศษ 3</td>
+      <td>ผัดพริกเผา เบค่อน</td>
+      <td>ไข่ดาว 1</td>
       <td>4</td>
-      <td>กำลังทำ</td>
+      <td>รอการชำระเงิน</td>
+    </tr>
+    <tr className="hover">
+      <th>4</th>
+      <td>ผัดผงกะหรี่ กุ้ง</td>
+      <td>ไข่ดาว 1 , พิเศษ 2</td>
+      <td>2</td>
+      <td>รอการยืนยัน</td>
     </tr>
   </tbody>
 </table>

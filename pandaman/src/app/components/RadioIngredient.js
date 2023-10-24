@@ -1,19 +1,12 @@
+import React from 'react';
 import { atom, useAtom } from 'jotai';
 
 const selectedRadioAtom = atom();
-
 const RadioIngredient = () => {
   const [selectedRadio, setSelectedRadio] = useAtom(selectedRadioAtom);
 
   const handleRadioChange = (event) => {
-    const value = event.target.value;
-    setSelectedRadio(prevSelectedRadio => {
-      if (prevSelectedRadio.includes(value)) {
-        return prevSelectedRadio.filter(item => item !== value);
-      } else {
-        return [...prevSelectedRadio, value];
-      }
-    });
+    setSelectedRadio(event.target.value);
   };
 
   return (

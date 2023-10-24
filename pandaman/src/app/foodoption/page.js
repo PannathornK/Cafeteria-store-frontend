@@ -1,9 +1,11 @@
 'use client'
 
 import React from 'react';
+import { useAtom, atom } from 'jotai';
 import AmountButton from '../components/AmountButton';
 import Textarea from '../components/Textarea';
 
+import { selectedRadioAtom } from '../lib/atom';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import RadioIngredient from '../components/RadioIngredient';
@@ -12,7 +14,13 @@ import CheckboxExtra from '../components/CheckboxExtra';
 import CheckboxEgg from '../components/CheckboxEgg';
 import RadioContainer from '../components/RadioContainer';
 
+
 export default function foodOption() {
+  const [selectedRadio, setSelectedRadio] = useAtom(selectedRadioAtom);
+
+  const handleSaveState = () => {
+    console.log(selectedRadio);
+  };
   const showQueue = () => {
     document.getElementById('queueModal').showModal();
   };
@@ -113,7 +121,7 @@ export default function foodOption() {
 </dialog>
 
     <div className="relative flex flex-col w-full bg-white ">
-  <figure><img className="h-48 w-full object-cover" src="/food.jpg" alt="krapow" /></figure>
+  <figure><img className="h-48 w-full object-cover" src="https://pchangproject.s3.amazonaws.com/IMG_20230710_121725.jpg" alt="krapow" /></figure>
   <div className="flex flex-row items-center justify-between w-full px-6 py-4">
     <h2 className="card-title">
       กระเพรา
@@ -129,7 +137,7 @@ export default function foodOption() {
   <div className="flex flex-row items-end mb-2">
     <p className="font-bold">ประเภทเนื้อสัตว์</p> <p className="pl-2 text-sm">Required, select 1</p>
   </div>
-  <RadioIngredient />
+  <RadioIngredient selectedRadio={selectedRadio} setSelectedRadio={setSelectedRadio} />
 
 </div>
 
@@ -180,7 +188,7 @@ export default function foodOption() {
 <div className="sticky bottom-0 w-full bg-white mt-auto">
   <div className="divider m-0 p-0 h-0"></div> 
   <div className="flex flex-col px-6 py-4 text-center items-center">
-    <button className="btn bg-coral text-white w-full">
+    <button className="btn bg-coral text-white w-full" onClick={handleSaveState}>
       <p className="font-bold">เพิ่มออเดอร์ - ฿60</p>
     </button>
   </div>

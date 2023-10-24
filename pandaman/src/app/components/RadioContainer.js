@@ -35,6 +35,10 @@ const RadioContainer = () => {
           />
           <p className="pl-4">ใส่จาน</p>
         </div>
+        <span className="label-text flex flex-row items-end">
+          <p className="text-gray-500">฿</p>
+          <p className="font-bold pl-1">0</p>
+        </span>
       </label>
 
       <div className="divider m-0"></div>
@@ -51,6 +55,10 @@ const RadioContainer = () => {
           />
           <p className="pl-4">ใส่กล่อง</p>
         </div>
+        <span className="label-text flex flex-row items-end">
+          <p className="text-gray-500">฿</p>
+          <p className="font-bold pl-1">5</p>
+        </span>
       </label>
 
     </div>
