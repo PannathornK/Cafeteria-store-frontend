@@ -13,9 +13,10 @@ export default function krapow() {
     document.getElementById('queueModal').showModal();
   };
 
-  const [ phoneNumber, setPhoneNumber ] = useState("012-345-6789");
   const [ amount, setAmount ] = useState(1.00);         
   const [ qrCode ,setqrCode ] = useState("sample");
+  const [ showQR, setShowQR ] = useState(false); // Add state variable
+
   function handlePhoneNumber(e) {
     setPhoneNumber(e.target.value);
   }
@@ -27,10 +28,11 @@ export default function krapow() {
     var canvas = document.getElementById("QRcanvas");
     canvas.toBlob(function(blob) {
       saveAs(blob, "qr-code.png");
-});
+    });
   }
   function handleQR() {
-    setqrCode(generatePayload(phoneNumber, { amount }));
+    setqrCode(generatePayload("012-345-6789", { amount }));
+    setShowQR(true); // Show the QR code
   }
 
   return (
@@ -160,17 +162,20 @@ export default function krapow() {
         </p>
   </div>
 
+  {showQR && (
+  <div id='qr'>
+    <div className='w-full items-center flex justify-center mt-8'>
+      <div className='qrImg h-56 w-56 items-center flex justify-center'>
+        <QRCode id='QRcanvas' value={qrCode} size={180}/>
+      </div>
+    </div>
 
-  <div className='w-full items-center flex justify-center mt-8'>
-<div className='qrImg h-56 w-56 items-center flex justify-center'>
-    <QRCode id='QRcanvas' value={qrCode} size={180}/>
-</div>
-</div>
-
-<div className='w-full flex items-center justify-center relative'>
-<img src='/chat-bubble.svg' className='txtbubble h-40 w-64 rotate-180' alt="Chat bubble"></img>
-<h1 className='absolute top-1/2 text-white font-bold' onClick={downloadQR}>ดาวน์โหลด Qr code</h1>
-</div>
+    <div className='w-full flex items-center justify-center relative'>
+      <img src='/chat-bubble.svg' className='txtbubble h-40 w-64 rotate-180' alt="Chat bubble"></img>
+      <h1 className='absolute top-1/2 text-white font-bold' onClick={downloadQR}>ดาวน์โหลด Qr code</h1>
+    </div>
+  </div>
+)}
 
 </div>
 
