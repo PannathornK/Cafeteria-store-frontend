@@ -1,7 +1,26 @@
 'use client'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 export default function control() {
+
+  const [socket, setSocket] = useState(null);
+
+  useEffect(() => {
+    const newSocket = new WebSocket('ws://localhost:3001');
+    setSocket(newSocket);
+
+    return () => {
+      newSocket.close();
+    }
+  }, [])
+
+  const sendMessage = (message) => {
+    if (socket && socket.readyState === WebSocket.OPEN) {
+      socket.send(message);
+    } else {
+      console.error('WebSocket is not connected');
+    }
+  }
 
   const showData = () => {
     document.getElementById('dataModal').showModal();
@@ -18,12 +37,12 @@ export default function control() {
         </div>
         <div className='mt-8 flex flex-row items-center justify-between mx-16'>
         <div className='flex flex-col'>
-        <div className='triangle bg-coral mx-8 mt-8'></div>
-        <div className="triangle2 bg-coral mx-8 mt-16"></div>
+        <div className='triangle bg-coral mx-8 mt-8' onClick={() => sendMessage('up')}></div>
+        <div className="triangle2 bg-coral mx-8 mt-16" onClick={() => sendMessage('down')}></div>
         </div>
-        <button className="btn w-40 h-20 text-white font-bold bg-coral drop-shadow-md border-none"> <h2>ยืนยันออเดอร์</h2></button>
-        <button className="btn w-40 h-20 text-white font-bold bg-green-600 drop-shadow-md border-none"> <h2>ออเดอร์เสร็จ</h2></button>
-        <button className="btn w-40 h-20 text-white font-bold bg-red-600 drop-shadow-md border-none"> <h2>ลบออเดอร์</h2></button>
+        <button className="btn w-40 h-20 text-white font-bold bg-coral drop-shadow-md border-none" onClick={() => sendMessage('accept')}> <h2>ยืนยันออเดอร์</h2></button>
+        <button className="btn w-40 h-20 text-white font-bold bg-green-600 drop-shadow-md border-none" onClick={() => sendMessage('finish')}> <h2>ออเดอร์เสร็จ</h2></button>
+        <button className="btn w-40 h-20 text-white font-bold bg-red-600 drop-shadow-md border-none" onClick={() => sendMessage('cancel')}> <h2>ลบออเดอร์</h2></button>
         </div>
         <div className='absolute bottom-0 right-0'>
           <button className=" btn btn-sm text-white font-bold bg-gray-600 mr-4 mb-4" onClick={cfgData}> แก้ไข</button>
