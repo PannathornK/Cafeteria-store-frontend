@@ -3,32 +3,47 @@ import React, { useEffect, useState } from 'react'
 
 export default function control() {
 
-  const [socket, setSocket] = useState(null);
+  // const [socket, setSocket] = useState(null);
+  const [orders, setOrders] = useState([])
 
   useEffect(() => {
-    const newSocket = new WebSocket('ws://localhost:3001');
-    setSocket(newSocket);
-
-    return () => {
-      newSocket.close();
-    }
+    fetch('http://localhost:3001/getOrder')
+    .then((res) => res.json())
+    .then((data) => setOrders(data))
   }, [])
 
-  const sendMessage = (message) => {
-    if (socket && socket.readyState === WebSocket.OPEN) {
-      socket.send(message);
-    } else {
-      console.error('WebSocket is not connected');
-    }
-  }
+  // const sendMessage = (message) => {
+  //   if (socket && socket.readyState === WebSocket.OPEN) {
+  //     socket.send(message);
+  //   } else {
+  //     console.error('WebSocket is not connected');
+  //   }
+  // }
 
-  const showData = () => {
-    document.getElementById('dataModal').showModal();
-  };
+  // const showData = () => {
+  //   document.getElementById('dataModal').showModal();
+  // };
   const cfgData = () => {
     document.getElementById('cfgModal').showModal();
   };
-    return (
+
+  const List = ({ names }) => (
+    <ul>
+      {names.map((name) => (
+        <li key={name}>{name}<br /></li>
+      ))}
+    </ul>
+  );
+
+  const ExtraList = ({ names }) => (
+    <ul>
+      {names.map((name) => (
+        <li key={name}>{name === 1 ? "✔️" : "❌"}<br /></li>
+      ))}
+    </ul>
+  );
+
+  return (
       <main className="flex flex-col bg-white">
         <div className='flex flex-row h-12 px-4 py-2 items-center justify-between shadow-md'>
           <div className='flex items-center'>
@@ -69,14 +84,72 @@ export default function control() {
       <tr>
         <th>ออเดอร์</th>
         <th>เมนู</th>
-        <th>เพิ่มเติม</th>
+        <th>ความเผ็ด</th>
+        <th>พิเศษ</th>
+        <th>ไข่</th>
+        <th>ภาชนะ</th>
         <th>ออเดอร์รวม</th>
         <th>สถานะ</th>
       </tr>
     </thead>
     <tbody>
       {/* row 1 */}
-      <tr>
+      {orders.reduce((groupedOrder, item) => {
+          const existingGroup = groupedOrder.find(
+            (group) => group.order_id === item.order_id
+          );
+          if (existingGroup) {
+            existingGroup.order_menu_id.push(item.order_menu_id);
+            existingGroup.order_menu_status.push(item.order_menu_status);
+            existingGroup.menu.push(item.menu);
+            existingGroup.spicy.push(item.spicy);
+            existingGroup.extra.push(item.extra);
+            existingGroup.egg.push(item.egg);
+            existingGroup.container.push(item.container);
+          } else {
+            groupedOrder.push({
+              order_id: item.order_id,
+              order_menu_id: [item.order_menu_id],
+              order_status: item.order_status,
+              order_menu_status: [item.order_menu_status],
+              total_menu: item.total_menu,
+              menu: [item.menu],
+              spicy: [item.spicy],
+              extra: [item.extra],
+              egg: [item.egg],
+              optional_text: item.optional_text,
+              container: [item.container],
+              queue_id: item.queue_id
+            });
+          }
+          console.log(groupedOrder);
+          return groupedOrder;
+        }, []).map((order, index) => (
+        <tr key={order.order_id}>
+          <th>{index + 1}</th>
+          <td><List names={order.menu}/></td>
+          <td><List names={order.spicy}/></td>
+          <td><ExtraList names={order.extra}/></td>
+          <td><List names={order.egg}/></td>
+          <td><List names={order.container}/></td>
+          <td>{order.total_menu}</td>
+          <td>
+          <div className="dropdown dropdown-end">
+            <button tabIndex={0} role="button" className="btn btn-sm justify-center text-white font-bold bg-red-500 pr-1">
+              <div className='flex items-center'>
+              รอการยืนยัน 
+               <img className='w-auto h-7 justify-end' src='/dropdown.svg'></img>
+              </div>
+            </button>
+             <ul tabIndex={0} className="dropdown-content z-[1] menu shadow bg-base-100 rounded-box w-36">
+                <li><a>ยืนยัน</a></li>
+                <li><a>ยกเลิก</a></li>
+             </ul>
+           </div>
+          </td>
+        </tr>
+      ))}
+      {/* <tr>
         <th>1</th>
         <td>กระเพรา หมู <br></br>ผัดผงกะหรี่ กุ้ง</td>
         <td>ไข่ดาว 2 , พิเศษ 3 <br></br>ไข่ดาว 1 , พิเศษ 2</td>
@@ -118,9 +191,10 @@ export default function control() {
            </div>
           </div>
         </td>
-      </tr>
+      </tr> */}
+
       {/* row 2 */}
-      <tr>
+      {/* <tr>
         <th>2</th>
         <td>ข้าวผัด หมูกรอบ</td>
         <td>พิเศษ 2</td>
@@ -138,17 +212,17 @@ export default function control() {
              </ul>
            </div>
         </td>
-      </tr>
+      </tr> */}
       {/* row 3 */}
-      <tr>
+      {/* <tr>
       <th>3</th>
         <td>ข้าวผัด หมูกรอบ</td>
         <td>พิเศษ 2</td>
         <td>3</td>
         <td><button className=" btn btn-sm text-blue-900 font-bold mr-2"> รอการชำระเงิน</button></td>
-      </tr>
+      </tr> */}
       {/* row 4 */}
-      <tr>
+      {/* <tr>
       <th>4</th>
       <td>กระเพรา หมู <br></br>ผัดผงกะหรี่ กุ้ง</td>
         <td>ไข่ดาว 2 , พิเศษ 3 <br></br>ไข่ดาว 1 , พิเศษ 2</td>
@@ -167,7 +241,7 @@ export default function control() {
              </ul>
            </div>
           </td>
-      </tr>
+      </tr> */}
     </tbody>
   </table>
 </div>
