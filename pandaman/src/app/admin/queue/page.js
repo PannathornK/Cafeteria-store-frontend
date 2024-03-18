@@ -4,58 +4,58 @@ import React, { useEffect, useState } from 'react';
 
 export default function krapow() {
   const [queues, setQueues] = useState([]);
-  const [selectedItemIndex, setSelectedItemIndex] = useState(0);
+  // const [selectedItemIndex, setSelectedItemIndex] = useState(0);
 
   useEffect(() => {
     fetch('http://localhost:3001/getQueue')
       .then((res) => res.json())
       .then((data) => setQueues(data));
     
-    const socket = new WebSocket('ws://localhost:3001');
+    // const socket = new WebSocket('ws://localhost:3001');
   
-    socket.addEventListener('message', (event) => {
-      console.log(event.data);
-      if(event.data === 'up')handleMoveUp();
-      if(event.data === 'down')handleMoveDown();
-      if(event.data === 'accept')changeStatus("cooking", "approved");
-      if(event.data === 'finish')changeStatus("finished", "finished");
-      if(event.data === 'cancel')changeStatus("cancelled", "rejected");
-    })
+    // socket.addEventListener('message', (event) => {
+    //   console.log(event.data);
+    //   if(event.data === 'up')handleMoveUp();
+    //   if(event.data === 'down')handleMoveDown();
+    //   if(event.data === 'accept')changeStatus("cooking", "approved");
+    //   if(event.data === 'finish')changeStatus("finished", "finished");
+    //   if(event.data === 'cancel')changeStatus("cancelled", "rejected");
+    // })
     
-    return () => {
-      socket.close();
-    }
+    // return () => {
+    //   socket.close();
+    // }
   }, []);
   
-  const handleMoveUp = () => {
-    if (selectedItemIndex > 0) {
-      setSelectedItemIndex(selectedItemIndex - 1);
-    }
-  };
+  // const handleMoveUp = () => {
+  //   if (selectedItemIndex > 0) {
+  //     setSelectedItemIndex(selectedItemIndex - 1);
+  //   }
+  // };
 
-  const handleMoveDown = () => {
-    if (selectedItemIndex < queues.length - 1) {
-      setSelectedItemIndex(selectedItemIndex + 1);
-    }
-  };
+  // const handleMoveDown = () => {
+  //   if (selectedItemIndex < queues.length - 1) {
+  //     setSelectedItemIndex(selectedItemIndex + 1);
+  //   }
+  // };
 
-  const changeStatus = (queue_status, order_status) => {
-    if (selectedItemIndex >= 0 && selectedItemIndex < queues.length) {
-      const selectedQueue = {
-        "queue_id": queues[selectedItemIndex].queue_id,
-        "queue_status": queue_status,
-        "order_status": order_status
-      };
-      console.log(selectedQueue);
-      fetch('http://localhost:3001/changeStatus', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(selectedQueue),
-      })
-    }
-  }
+  // const changeStatus = (queue_status, order_status) => {
+  //   if (selectedItemIndex >= 0 && selectedItemIndex < queues.length) {
+  //     const selectedQueue = {
+  //       "queue_id": queues[selectedItemIndex].queue_id,
+  //       "queue_status": queue_status,
+  //       "order_status": order_status
+  //     };
+  //     console.log(selectedQueue);
+  //     fetch('http://localhost:3001/changeStatus', {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify(selectedQueue),
+  //     })
+  //   }
+  // }
 
   const statusLabel = {
     "wait-confirm": "รอการยืนยัน",
@@ -94,16 +94,26 @@ export default function krapow() {
           </thead>
           <tbody>
           {queues.map((queue, index) => (
-            <tr key={queue.queue_id} className={index === selectedItemIndex ? 'bg-neutral-content' : ''}>
-              <th>{queue.queue_id}</th>
-              <th>{queue.menu_name} {queue.meat}</th>
-              <th>{queue.spicy}</th>
-              <th>{queue.extra === "1" ? "✔️" : "❌"}</th>
-              <th>{queue.egg}</th>
-              <th>{queue.optional_text}</th>
-              <th>{queue.container}</th>
-              <th>{queue.quantity}</th>
-              <th>{statusLabel[queue.queue_status]}</th>
+            <tr key={queue.queue_id}>
+              <td>{index + 1}</td>
+              <td>{queue.menu}</td>
+              <td>{queue.spicy}</td>
+              <td>{queue.extra === "1" ? "✔️" : "❌"}</td>
+              <td>{queue.egg}</td>
+              <td>{queue.optional_text}</td>
+              <td>{queue.container}</td>
+              <td>{queue.quantity}</td>
+              <td>{queue.queue_status === 'approved' ? (
+                <div className="dropdown dropdown-end">
+                  <button className="btn btn-sm text-white font-bold bg-black py-0 px-0">
+                    <p className="ml-2">ได้รับการอนุมัติ</p>
+                    <img className='w-auto h-7' src='/dropdown.svg'></img>
+                  </button>
+                  <ul tabIndex={0} className="dropdown-content z-[1] menu shadow bg-base-100 rounded-box w-36">
+                    <li>เริ่มทำ</li>
+                  </ul>
+                </div>
+              ): (queue.queue_status)}</td>
             </tr>
           ))}
           </tbody>
