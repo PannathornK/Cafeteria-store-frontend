@@ -1,7 +1,9 @@
 'use client'
 import React, { useEffect, useState } from 'react'
+import { SaleChart } from '@/app/components/sChart';
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 
-export default function control() {
+export default function dashboard() {
 
   const [socket, setSocket] = useState(null);
 
@@ -22,265 +24,73 @@ export default function control() {
     }
   }
 
-  const showData = () => {
-    document.getElementById('dataModal').showModal();
-  };
-  const cfgData = () => {
-    document.getElementById('cfgModal').showModal();
+
+  const data = [
+    { id: 1, item: 'กระเพราหมูกรอบ', value: 18 },
+    { id: 2, item: 'ผักกระเที่ยมไก่', value: 16 },
+    { id: 3, item: 'สปาเกตตี้หมู', value: 20 },
+    { id: 4, item: 'ผักกระเที่ยมหมู', value: 19 },
+    { id: 5, item: 'ผักกระเที่ยมกุ้ง', value: 14 },
+    { id: 6, item: 'กระเพราคลุกข้าวหมู', value: 13 },
+  ];
+  const chart_data = {
+    labels: "ss",
+    datasets: [{
+      label: 'My First Dataset',
+      data: [65, 59, 80, 81, 56, 55, 40],
+      fill: false,
+      borderColor: 'rgb(75, 192, 192)',
+      tension: 0.1
+    }]
   };
     return (
-      <main className="flex flex-col bg-white">
-        <div className='flex flex-row h-12 px-4 py-2 items-center justify-between shadow-md'>
-          <div className='flex items-center'>
-          <h2 className='font-bold'>พี่ช้าง อาหารตามสั่ง</h2>
-          <input type="checkbox" className="toggle toggle-error ml-4" />
-          <p className='ml-2'>ปิด/เปิดร้าน</p>
+      <main className="flex flex-col h-screen bg-white px-4 pt-4">
+        <a href="/admin/control">
+              <button className="btn btn-sm btn-ghost bg-white text-gray p-0">
+                <ArrowBackIosNewIcon sx={{ fontSize: 14 }} />
+                <div className='text-xl font-bold'>Dashboard</div>
+              </button>
+            </a>
+        <div className='pt-4 grid grid-cols-2'>
+          <div>
+            <h2 className='font-bold'>
+              ยอดขายวันนี้
+            </h2>
+            <h2 className='font-bold text-coral'>
+              1,300 บาท
+            </h2>
           </div>
-
-        <div className='flex items-center'>
-          <button className=" btn btn-xs text-white font-bold bg-gray-600 mr-2" onClick={cfgData}> แก้ไข</button>
-          <div className="dropdown dropdown-end">
-            <div tabIndex={0} role="button" className="btn-sm flex p-0 items-center">
-              <img className='w-auto' src='/account.svg'></img>
-            </div>
-             <ul tabIndex={0} className="dropdown-content z-[1] menu shadow bg-base-100 rounded-box w-36">
-                <li><a>ข้อมูล</a></li>
-                <li><a>ออกจากระบบ</a></li>
-             </ul>
-           </div>
+          <div>
+            <h2 className='font-bold'>
+              ยอดขาย
+            </h2>
+            <SaleChart />
+          </div>
         </div>
+        <div className='pt-4 grid grid-cols-2 gap-8 py-8'>
+          <div>
+            <h2 className='font-bold'>
+              เมนูขายดี
+            </h2>
+            {data.map((item) => (
+              <div key={item.id} className="flex justify-between">
+                <span>{item.item}</span>
+                <span>{item.value} รายการ</span>
+              </div>
+            ))}
+          </div>
+          <div>
+            <h2 className='font-bold'>
+              วัตถุดิบที่ใช้
+            </h2>
+            {data.map((item) => (
+              <div key={item.id} className="flex justify-between">
+                <span>{item.item}</span>
+                <span>{item.value} รายการ</span>
+              </div>
+            ))}
+          </div>
         </div>
-
-
-
-<div className="overflow-x-auto">
-  <table className="table">
-    {/* head */}
-    <thead>
-      <tr>
-        <th>ออเดอร์</th>
-        <th>เมนู</th>
-        <th>เพิ่มเติม</th>
-        <th>ออเดอร์รวม</th>
-        <th>สถานะ</th>
-      </tr>
-    </thead>
-    <tbody>
-      {/* row 1 */}
-      <tr>
-        <th>1</th>
-        <td>กระเพรา หมู <br></br>ผัดผงกะหรี่ กุ้ง</td>
-        <td>ไข่ดาว 2 , พิเศษ 3 <br></br>ไข่ดาว 1 , พิเศษ 2</td>
-        <td>4</td>
-        <td className='flex justify-center'>
-          <div className='flex-col'>
-          <div className="dropdown dropdown-end">
-            <button tabIndex={0} role="button" className="btn btn-sm justify-center text-white font-bold bg-black pr-1">
-              <div className='flex items-center'>
-               กำลังทำ 
-               <img className='w-auto h-7 justify-end' src='/dropdown.svg'></img>
-              </div>
-            </button>
-             <ul tabIndex={0} className="dropdown-content z-[1] menu shadow bg-base-100 rounded-box w-36">
-                <li><a>ออเดอร์เสร็จ</a></li>
-             </ul>
-           </div>
-            <br></br>
-            <div className="dropdown dropdown-end">
-            <button tabIndex={0} role="button" className="btn btn-sm justify-center text-white font-bold bg-black pr-1">
-              <div className='flex items-center'>
-               กำลังทำ 
-               <img className='w-auto h-7 justify-end' src='/dropdown.svg'></img>
-              </div>
-            </button>
-             <ul tabIndex={0} className="dropdown-content z-[1] menu shadow bg-base-100 rounded-box w-36">
-                <li><a>ออเดอร์เสร็จ</a></li>
-             </ul>
-           </div>
-          </div>
-          <div className='flex'>
-          <div className="dropdown dropdown-end">
-          <button className="btn btn-sm text-white font-bold bg-black h-full py-2 px-0">
-              <img className='w-auto h-7' src='/dropdown.svg'></img>
-            </button>
-             <ul tabIndex={0} className="dropdown-content z-[1] menu shadow bg-base-100 rounded-box w-36">
-                <li><a>ออเดอร์เสร็จ</a></li>
-             </ul>
-           </div>
-          </div>
-        </td>
-      </tr>
-      {/* row 2 */}
-      <tr>
-        <th>2</th>
-        <td>ข้าวผัด หมูกรอบ</td>
-        <td>พิเศษ 2</td>
-        <td>3</td>
-        <td>
-        <div className="dropdown dropdown-end">
-        <button tabIndex={0} role="button" className="btn btn-sm justify-center text-white font-bold bg-green-600 pr-1">
-              <div className='flex items-center'>
-               เสร็จแล้ว 
-               <img className='w-auto h-7 justify-end' src='/dropdown.svg'></img>
-              </div>
-            </button>
-             <ul tabIndex={0} className="dropdown-content z-[1] menu shadow bg-base-100 rounded-box w-36">
-                <li><a>ลบรายการ</a></li>
-             </ul>
-           </div>
-        </td>
-      </tr>
-      {/* row 3 */}
-      <tr>
-      <th>3</th>
-        <td>ข้าวผัด หมูกรอบ</td>
-        <td>พิเศษ 2</td>
-        <td>3</td>
-        <td><button className=" btn btn-sm text-blue-900 font-bold mr-2"> รอการชำระเงิน</button></td>
-      </tr>
-      {/* row 4 */}
-      <tr>
-      <th>4</th>
-      <td>กระเพรา หมู <br></br>ผัดผงกะหรี่ กุ้ง</td>
-        <td>ไข่ดาว 2 , พิเศษ 3 <br></br>ไข่ดาว 1 , พิเศษ 2</td>
-        <td>3</td>
-        <td>
-          <div className="dropdown dropdown-end">
-            <button tabIndex={0} role="button" className="btn btn-sm justify-center text-white font-bold bg-red-500 pr-1">
-              <div className='flex items-center'>
-              รอการยืนยัน 
-               <img className='w-auto h-7 justify-end' src='/dropdown.svg'></img>
-              </div>
-            </button>
-             <ul tabIndex={0} className="dropdown-content z-[1] menu shadow bg-base-100 rounded-box w-36">
-                <li><a>ยืนยัน</a></li>
-                <li><a>ยกเลิก</a></li>
-             </ul>
-           </div>
-          </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
-<dialog id="cfgModal" className="modal">
-  <div className="modal-box bg-white flex flex-col py-4 px-8 h-3/4 w-auto max-w-none">
-    <form method="dialog">
-      <button className="btn btn-xs btn-circle bg-white absolute right-2 top-2">
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
-      </button>
-    </form>
-    <div className='flex px-4 pt-4'>
-    <div className='flex flex-col mr-4'>
-    <h2 className='font-bold'>แก้ไขเมนู</h2>
-      <div className='grid grid-cols-3 gap-x-2 gap-y-2 mt-2'>
-      <div className='flex flex-row items-center'>
-        <input type="checkbox" className="toggle toggle-xs toggle-error mr-2" />
-        <p>กระเพรา</p>
-      </div>
-      <div className='flex flex-row items-center'>
-        <input type="checkbox" className="toggle toggle-xs toggle-error mr-2" />
-        <p>ข้าวผัด</p>
-      </div>
-      <div className='flex flex-row items-center'>
-        <input type="checkbox" className="toggle toggle-xs toggle-error mr-2" />
-        <p>ข้าวผัดแหนม</p>
-      </div>
-      <div className='flex flex-row items-center'>
-        <input type="checkbox" className="toggle toggle-xs toggle-error mr-2" />
-        <p>ผัดพริกเผา</p>
-      </div>
-      <div className='flex flex-row items-center'>
-        <input type="checkbox" className="toggle toggle-xs toggle-error mr-2" />
-        <p>ผัดพริกแกง</p>
-      </div>
-      <div className='flex flex-row items-center'>
-        <input type="checkbox" className="toggle toggle-xs toggle-error mr-2" />
-        <p>ผัดซีอิ๊ว</p>
-      </div>
-      <div className='flex flex-row items-center'>
-        <input type="checkbox" className="toggle toggle-xs toggle-error mr-2" />
-        <p>ผัดผงกะหรี่</p>
-      </div>
-      <div className='flex flex-row items-center'>
-        <input type="checkbox" className="toggle toggle-xs toggle-error mr-2" />
-        <p>มาม่าผัดไข่</p>
-      </div>
-      <div className='flex flex-row items-center'>
-        <input type="checkbox" className="toggle toggle-xs toggle-error mr-2" />
-        <p>มาม่าผัดขี้เมา</p>
-      </div>
-      <div className='flex flex-row items-center'>
-        <input type="checkbox" className="toggle toggle-xs toggle-error mr-2" />
-        <p>ผัดน้ำมันหอย</p>
-      </div>
-      <div className='flex flex-row items-center'>
-        <input type="checkbox" className="toggle toggle-xs toggle-error mr-2" />
-        <p>ผัดกระเทียม</p>
-      </div>
-      <div className='flex flex-row items-center'>
-        <input type="checkbox" className="toggle toggle-xs toggle-error mr-2" />
-        <p>ราดหน้า</p>
-      </div>
-      <div className='flex flex-row items-center'>
-        <input type="checkbox" className="toggle toggle-xs toggle-error mr-2" />
-        <p>กะเพราคลุกข้าว</p>
-      </div>
-      <div className='flex flex-row items-center'>
-        <input type="checkbox" className="toggle toggle-xs toggle-error mr-2" />
-        <p>สุกี้น้ำ/แห้ง</p>
-      </div>
-      <div className='flex flex-row items-center'>
-        <input type="checkbox" className="toggle toggle-xs toggle-error mr-2" />
-        <p>มักกะโรนีผัดซอส</p>
-      </div>
-      <div className='flex flex-row items-center'>
-        <input type="checkbox" className="toggle toggle-xs toggle-error mr-2" />
-        <p>สปาเก็ตตี้ราดซอส</p>
-      </div>
-      <div className='flex flex-row items-center'>
-        <input type="checkbox" className="toggle toggle-xs toggle-error mr-2" />
-        <p>ข้าวต้มทรงเครื่อง</p>
-      </div>
-      </div>
-    
-    </div>
-
-    <div className='flex flex-col'>
-    <h2 className='font-bold'>แก้ไขวัตถุดิบ</h2>
-    <div className='grid grid-cols-1 gap-y-2 mt-2'>
-      <div className='flex flex-row items-center'>
-        <input type="checkbox" className="toggle toggle-xs toggle-error mr-2" />
-        <p>หมู</p>
-      </div>
-      <div className='flex flex-row items-center'>
-        <input type="checkbox" className="toggle toggle-xs toggle-error mr-2" />
-        <p>ไก่</p>
-      </div>
-      <div className='flex flex-row items-center'>
-        <input type="checkbox" className="toggle toggle-xs toggle-error mr-2" />
-        <p>หมูกรอบ</p>
-      </div>
-      <div className='flex flex-row items-center'>
-        <input type="checkbox" className="toggle toggle-xs toggle-error mr-2" />
-        <p>เบค่อน</p>
-      </div>
-      <div className='flex flex-row items-center'>
-        <input type="checkbox" className="toggle toggle-xs toggle-error mr-2" />
-        <p>กุ้ง</p>
-      </div>
-      <div className='flex flex-row items-center'>
-        <input type="checkbox" className="toggle toggle-xs toggle-error mr-2" />
-        <p>ปลาหมึก</p>
-      </div>
-      
-
-    </div>
-    </div>
-    </div>
-        
-  </div>
-</dialog>
       </main>
     );
   }
