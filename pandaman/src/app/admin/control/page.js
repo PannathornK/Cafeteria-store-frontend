@@ -217,7 +217,9 @@ export default function control() {
                   ) : order.order_status === 'wait-pay' ? (
                     <p className='font-bold text-blue-700'>รอการชำระเงิน</p>
                   ) : order.order_status === 'approved' ? (
-                      <p className='font-bold'>ได้รับการอนุมัติ</p>
+                    <p className='font-bold'>ได้รับการอนุมัติ</p>
+                  ) : order.order_status === 'cooking' ? (
+                    <p className='font-bold text-yellow-700'>กำลังทำ</p>
                   ) : (
                     <p className='font-bold text-red-700'>{order.order_status}</p>
                   )}
