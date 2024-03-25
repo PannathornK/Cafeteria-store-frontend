@@ -52,10 +52,13 @@ export default function krapow() {
 
   return (
     <main className="flex min-h-screen flex-col items-center bg-white">
-        <div className="navbar p-4 bg-white w-full flex flex-row drop-shadow-xl z-50">
+      <div className="navbar p-4 bg-white w-full flex flex-row drop-shadow-xl z-50">
         <div className="flex flex-row flex-wrap w-full justify-between">
           <div className="flex flex-row items-center">
             <h1 className="font-black pl-2">พี่ช้าง อาหารตามสั่ง</h1>
+          </div>
+          <div className='flex items-center'>
+            <button className=" btn btn-xs text-white font-bold bg-gray-600 mr-2"><a href='/admin/control'>หน้าออเดอร์</a></button>
           </div>
         </div>
       </div>
