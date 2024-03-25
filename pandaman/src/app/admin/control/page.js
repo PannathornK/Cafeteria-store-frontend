@@ -108,6 +108,8 @@ export default function control() {
         </div>
 
         <div className='flex items-center'>
+          <button className=" btn btn-xs text-white font-bold bg-gray-600 mr-2"><a href='/admin/queue'>หน้าคิว</a></button>
+          <button className=" btn btn-xs text-white font-bold bg-gray-600 mr-2"><a href='/admin/dashboard'>หน้าข้อมูล</a></button>
           <button className=" btn btn-xs text-white font-bold bg-gray-600 mr-2" onClick={cfgData}> แก้ไข</button>
           <div className="dropdown dropdown-end">
             <div tabIndex={0} role="button" className="btn-sm flex p-0 items-center">
