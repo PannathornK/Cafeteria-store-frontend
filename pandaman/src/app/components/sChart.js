@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -37,20 +37,54 @@ export const options = {
   },
 };
 
-const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+export function SaleChart() {
+  const [chartData, setChartData] = useState(null);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('http://localhost:3001/getMonthlySales');
+        if (!response.ok) {
+          throw new Error('Failed to fetch data');
+        }
+        const data = await response.json();
+        const formattedData = formatData(data);
+        setChartData(formattedData);
+      } catch (error) {
+        console.error('Error fetching sales data', error);
+      }
+    };
+    fetchData();
+  }, []);
 
-export const data = {
-  labels,
-  datasets: [
-    {
+  const monthDict = {
+    1: "January",
+    2: "February",
+    3: "March",
+    4: "April",
+    5: "May",
+    6: "June",
+    7: "July",
+    8: "August",
+    9: "September",
+    10: "October",
+    11: "November",
+    12: "December",
+  }
+
+  const formatData = (data) => {
+    const labels = data.map(entry => monthDict[entry.month]);
+    const dataset = {
       label: '7 เดือน',
-      data: [0, 100, 200, 300, 400, 500, 600],
+      data: data.map(entry => entry.sales),
       borderColor: 'rgb(255, 99, 132)',
       backgroundColor: 'rgba(255, 99, 132, 0.5)',
-    },
-  ],
-};
+    };
+    return { labels, datasets: [dataset] };
+  }
 
-export function SaleChart() {
-  return <Line options={options} data={data} />;
+  if (!chartData) {
+    return null;
+  }
+
+  return <Line options={options} data={chartData} />;
 }
