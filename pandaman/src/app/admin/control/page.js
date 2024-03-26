@@ -6,11 +6,15 @@ export default function control() {
   // const [socket, setSocket] = useState(null);
   const [orders, setOrders] = useState([])
   const [refresh, setRefresh] = useState(false)
+  const [menuData, setMenuData] = useState([]);
 
   useEffect(() => {
     fetch('http://localhost:3001/getOrder')
     .then((res) => res.json())
     .then((data) => setOrders(data))
+    fetch('http://localhost:3001/getMenuAvailability')
+    .then((res) => res.json())
+    .then((data) => setMenuData(data))
   }, [refresh])
 
   // const sendMessage = (message) => {
@@ -44,7 +48,7 @@ export default function control() {
     </ul>
   );
 
-  const handleClick = async (orderId, uncheckFirst = false) => {
+  const handleOrder = async (orderId, uncheckFirst = false) => {
     const allInputs = document.querySelectorAll(`input[type="checkbox"][data-order-id="${orderId}"]`);
 
     if (uncheckFirst) {
@@ -81,22 +85,36 @@ export default function control() {
       if(response.ok){
         console.log('API response:', await response.json());
         setRefresh(!refresh)
-        // const updatedOrders = await fetch('http://localhost:3001/getOrder')
-        // .then((res) => res.json())
-        // .catch((error) => {
-        //   console.error('Error fetching updated orders:', error);
-        // })
-        // if(updatedOrders){
-        //   setOrders(updatedOrders)
-        // }
       } else {
         console.error('API error:', response.statusText);
       }
     } catch(error){
       console.error('API error:', error);
     }
-    
   };
+
+  const handleToggleAvailability = async (menuId, newAvailability) => {
+    try {
+      const response = await fetch('http://localhost:3001/updateMenuAvailability', {
+        method: 'put',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ menu_id: menuId, availability: newAvailability}),
+      });
+      if (!response.ok) {
+        throw new Error('Failed to update menu availability')
+      }
+      setMenuData(prevMenuData => {
+        return prevMenuData.map(item => {
+          return item.menu_id === menuId ? { ...item, availability: newAvailability } : item;
+        })
+      })
+      console.log('Menu availability updated successfully');
+    } catch (error) {
+      console.error('Error toggling menu availability', error);
+    }
+  }
 
   return (
     <main className="flex flex-col bg-white">
@@ -211,8 +229,8 @@ export default function control() {
                           <img className='w-auto h-7' src='/dropdown.svg'></img>
                         </button>
                         <ul tabIndex={0} className="dropdown-content z-[1] menu shadow bg-base-100 rounded-box w-36">
-                            <li><a onClick={() => handleClick(order.order_id)}>ยืนยัน</a></li>
-                            <li><a onClick={() => handleClick(order.order_id, true)}>ยกเลิก</a></li>
+                            <li><a onClick={() => handleOrder(order.order_id)}>ยืนยัน</a></li>
+                            <li><a onClick={() => handleOrder(order.order_id, true)}>ยกเลิก</a></li>
                         </ul>
                       </div>
                     </div>
@@ -394,9 +412,20 @@ export default function control() {
           </form>
           <div className='flex px-4 pt-4'>
             <div className='flex flex-col mr-4'>
-            <h2 className='font-bold'>แก้ไขเมนู</h2>
+              <h2 className='font-bold'>แก้ไขเมนู</h2>
               <div className='grid grid-cols-3 gap-x-2 gap-y-2 mt-2'>
-                <div className='flex flex-row items-center'>
+                {menuData.map(menuItem => (
+                  <div key={menuItem.menu_id} className='flex flex-row items-center'>
+                    <input
+                      type="checkbox"
+                      className="toggle toggle-xs toggle-error mr-2"
+                      checked={menuItem.availability}
+                      onChange={() => handleToggleAvailability(menuItem.menu_id, event.target.checked)}
+                    />
+                    <p>{menuItem.menu_name}</p>
+                  </div>
+                ))}
+                {/* <div className='flex flex-row items-center'>
                   <input type="checkbox" className="toggle toggle-xs toggle-error mr-2" />
                   <p>กระเพรา</p>
                 </div>
@@ -463,9 +492,8 @@ export default function control() {
                 <div className='flex flex-row items-center'>
                   <input type="checkbox" className="toggle toggle-xs toggle-error mr-2" />
                   <p>ข้าวต้มทรงเครื่อง</p>
-                </div>
+                </div> */}
               </div>
-            
             </div>
 
             <div className='flex flex-col'>
@@ -495,11 +523,9 @@ export default function control() {
                   <input type="checkbox" className="toggle toggle-xs toggle-error mr-2" />
                   <p>ปลาหมึก</p>
                 </div>
-                
               </div>
             </div>
           </div>
-              
         </div>
       </dialog>
   </main>
