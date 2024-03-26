@@ -80,39 +80,41 @@ export default function krapow() {
           </thead>
           <tbody>
           {queues.map((queue, index) => (
-            <tr key={queue.queue_id}>
-              <td>{index + 1}</td>
-              <td>{queue.menu}</td>
-              <td>{queue.spicy}</td>
-              <td>{queue.extra === "1" ? "✔️" : "❌"}</td>
-              <td>{queue.egg}</td>
-              <td>{queue.optional_text}</td>
-              <td>{queue.container}</td>
-              <td>{queue.quantity}</td>
-              <td>{queue.queue_status === 'approved' ? (
-                <div className="dropdown dropdown-end">
-                  <button className="btn btn-sm text-white font-bold bg-black py-0 px-0">
-                    <p className="ml-2">ได้รับการอนุมัติ</p>
-                    <img className='w-auto h-7' src='/dropdown.svg'></img>
-                  </button>
-                  <ul tabIndex={0} className="dropdown-content z-[1] menu shadow bg-base-100 rounded-box w-36">
-                    <li><a onClick={() => changeStatus(queue.queue_id, 'cooking')}>เริ่มทำ</a></li>
-                  </ul>
-                </div>
-              ) : queue.queue_status === 'cooking' ? (
-                <div className="dropdown dropdown-end">
-                  <button className="btn btn-sm text-white font-bold bg-green-500 py-0 px-0">
-                    <p className="ml-2">กำลังทำ</p>
-                    <img className='w-auto h-7' src='/dropdown.svg'></img>
-                  </button>
-                  <ul tabIndex={0} className="dropdown-content z-[1] menu shadow bg-base-100 rounded-box w-36">
-                    <li><a onClick={() => changeStatus(queue.queue_id, 'finished')}>เสร็จแล้ว</a></li>
-                  </ul>
-                </div>
-              ) : (
-                <p>{queue.queue_status}</p>
-              )}</td>
-            </tr>
+            queue.queue_status !== 'finished' && (
+              <tr key={queue.queue_id}>
+                <td>{queues.filter(q => q.queue_status !== 'finished').indexOf(queue) + 1}</td>
+                <td>{queue.menu}</td>
+                <td>{queue.spicy}</td>
+                <td>{queue.extra === "1" ? "✔️" : "❌"}</td>
+                <td>{queue.egg}</td>
+                <td>{queue.optional_text}</td>
+                <td>{queue.container}</td>
+                <td>{queue.quantity}</td>
+                <td>{queue.queue_status === 'approved' ? (
+                  <div className="dropdown dropdown-end">
+                    <button className="btn btn-sm text-white font-bold bg-black py-0 px-0">
+                      <p className="ml-2">ได้รับการอนุมัติ</p>
+                      <img className='w-auto h-7' src='/dropdown.svg'></img>
+                    </button>
+                    <ul tabIndex={0} className="dropdown-content z-[1] menu shadow bg-base-100 rounded-box w-36">
+                      <li><a onClick={() => changeStatus(queue.queue_id, 'cooking')}>เริ่มทำ</a></li>
+                    </ul>
+                  </div>
+                ) : queue.queue_status === 'cooking' ? (
+                  <div className="dropdown dropdown-end">
+                    <button className="btn btn-sm text-white font-bold bg-green-500 py-0 px-0">
+                      <p className="ml-2">กำลังทำ</p>
+                      <img className='w-auto h-7' src='/dropdown.svg'></img>
+                    </button>
+                    <ul tabIndex={0} className="dropdown-content z-[1] menu shadow bg-base-100 rounded-box w-36">
+                      <li><a onClick={() => changeStatus(queue.queue_id, 'finished')}>เสร็จแล้ว</a></li>
+                    </ul>
+                  </div>
+                ) : (
+                  <p>{queue.queue_status}</p>
+                )}</td>
+              </tr>
+            )
           ))}
           </tbody>
         </table>
