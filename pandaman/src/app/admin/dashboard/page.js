@@ -4,25 +4,13 @@ import { SaleChart } from '@/app/components/sChart';
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 
 export default function dashboard() {
-
-  const [socket, setSocket] = useState(null);
+  const [todaySales, setTodaySales] = useState(0);
 
   useEffect(() => {
-    const newSocket = new WebSocket('ws://localhost:3001');
-    setSocket(newSocket);
-
-    return () => {
-      newSocket.close();
-    }
-  }, [])
-
-  const sendMessage = (message) => {
-    if (socket && socket.readyState === WebSocket.OPEN) {
-      socket.send(message);
-    } else {
-      console.error('WebSocket is not connected');
-    }
-  }
+    fetch('http://localhost:3001/getTodaySales')
+      .then((res) => res.json())
+      .then((data) => setTodaySales(data));
+  }, []);
 
 
   const data = [
@@ -57,7 +45,7 @@ export default function dashboard() {
               ยอดขายวันนี้
             </h2>
             <h2 className='font-bold text-coral'>
-              1,300 บาท
+              {todaySales} บาท
             </h2>
           </div>
           <div>
