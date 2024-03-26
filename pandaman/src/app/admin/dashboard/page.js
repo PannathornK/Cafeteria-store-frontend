@@ -5,11 +5,19 @@ import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 
 export default function dashboard() {
   const [todaySales, setTodaySales] = useState(0);
+  const [bestSelling, setBestSelling] = useState([]);
+  const [ingredientUsed, setIngredientUsed] = useState([]);
 
   useEffect(() => {
     fetch('http://localhost:3001/getTodaySales')
       .then((res) => res.json())
       .then((data) => setTodaySales(data));
+    fetch('http://localhost:3001/getBestSellingMenu')
+      .then((res) => res.json())
+      .then((data) => setBestSelling(data));
+    fetch('http://localhost:3001/getIngredientsUsed')
+      .then((res) => res.json())
+      .then((data) => setIngredientUsed(data));
   }, []);
 
 
@@ -60,23 +68,31 @@ export default function dashboard() {
             <h2 className='font-bold'>
               เมนูขายดี
             </h2>
-            {data.map((item) => (
-              <div key={item.id} className="flex justify-between">
-                <span>{item.item}</span>
-                <span>{item.value} รายการ</span>
-              </div>
-            ))}
+            {bestSelling.length === 0 ? (
+              <div>ไม่มีข้อมูล</div>
+            ) : (
+              bestSelling.map((item) => (
+                <div key={item.menu_id} className="flex justify-between">
+                  <span>{item.menu_name}</span>
+                  <span>{item.daily_amount} รายการ</span>
+                </div>
+              ))
+            )}
           </div>
           <div>
             <h2 className='font-bold'>
               วัตถุดิบที่ใช้
             </h2>
-            {data.map((item) => (
-              <div key={item.id} className="flex justify-between">
-                <span>{item.item}</span>
-                <span>{item.value} รายการ</span>
-              </div>
-            ))}
+            {ingredientUsed.length === 0 ? (
+              <div>ไม่มีข้อมูล</div>
+            ) : (
+              ingredientUsed.map((item) => (
+                <div key={item.ingredient_daily_id} className="flex justify-between">
+                  <span>{item.ingredient_name}</span>
+                  <span>{item.daily_used} รายการ</span>
+                </div>
+              ))
+            )}
           </div>
         </div>
       </main>
