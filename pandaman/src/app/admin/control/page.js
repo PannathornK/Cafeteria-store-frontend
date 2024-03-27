@@ -7,6 +7,7 @@ export default function control() {
   const [orders, setOrders] = useState([])
   const [refresh, setRefresh] = useState(false)
   const [menuData, setMenuData] = useState([]);
+  const [storeState, setStoreState] = useState(1);
 
   useEffect(() => {
     fetch('http://localhost:3001/getOrder')
@@ -15,6 +16,9 @@ export default function control() {
     fetch('http://localhost:3001/getMenuAvailability')
     .then((res) => res.json())
     .then((data) => setMenuData(data))
+    fetch('http://localhost:3001/getStoreState')
+    .then((res) => res.json())
+    .then((data) => setStoreState(data))
   }, [refresh])
 
   // const sendMessage = (message) => {
@@ -117,12 +121,35 @@ export default function control() {
     }
   }
 
+  const handleToggleStore = async (newState) => {
+    try {
+      const response = await fetch('http://localhost:3001/updateStoreState', {
+        method: 'put',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ state: newState}),
+      });
+      if (!response.ok) {
+        throw new Error('Failed to update store state')
+      }
+      setStoreState(newState)
+    } catch (error) {
+      console.error('Error toggling store state', error);
+    }
+  }
+
   return (
     <main className="flex flex-col bg-white">
       <div className='flex flex-row h-12 px-4 py-2 items-center justify-between shadow-md'>
         <div className='flex items-center'>
           <h2 className='font-bold'>พี่ช้าง อาหารตามสั่ง</h2>
-          <input type="checkbox" className="toggle toggle-error ml-4" />
+          <input
+           type="checkbox"
+           className="toggle toggle-error ml-4"
+           checked={storeState}
+           onChange={() => handleToggleStore(event.target.checked)}
+          />
           <p className='ml-2'>ปิด/เปิดร้าน</p>
         </div>
 
