@@ -7,6 +7,7 @@ export default function control() {
   const [orders, setOrders] = useState([])
   const [refresh, setRefresh] = useState(false)
   const [menuData, setMenuData] = useState([]);
+  const [optionData, setOptionData] = useState([]);
   const [storeState, setStoreState] = useState(1);
 
   useEffect(() => {
@@ -19,6 +20,9 @@ export default function control() {
     fetch('http://localhost:3001/getStoreState')
     .then((res) => res.json())
     .then((data) => setStoreState(data))
+    fetch('http://localhost:3001/getOptionAvailability')
+    .then((res) => res.json())
+    .then((data) => setOptionData(data))
   }, [refresh])
 
   // const sendMessage = (message) => {
@@ -36,6 +40,22 @@ export default function control() {
     document.getElementById('cfgModal').showModal();
   };
 
+  const OptionalList = ({ names }) => (
+    <ul>
+      {names.map((name, index) => (
+        <li className='mt-2' key={index}>
+          {name ? (
+            <div className='tooltip tooltip-right' data-tip={name}>
+              <img className='h-4' src='/optionalText.svg'></img>
+            </div>
+          ) : (
+            <span className='invisible'></span>
+          )}
+          <br />
+        </li>
+      ))}
+    </ul>
+  )
   const List = ({ names }) => (
     <ul>
       {names.map((name, index) => (
@@ -98,7 +118,7 @@ export default function control() {
     }
   };
 
-  const handleToggleAvailability = async (menuId, newAvailability) => {
+  const handleToggleMenuAvailability = async (menuId, newAvailability) => {
     try {
       const response = await fetch('http://localhost:3001/updateMenuAvailability', {
         method: 'put',
@@ -121,6 +141,29 @@ export default function control() {
     }
   }
 
+  const handleToggleOptionAvailability = async (optionId, newAvailability) => {
+    try {
+      const response = await fetch('http://localhost:3001/updateOptionAvailability', {
+        method: 'put',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ option_id: optionId, availability: newAvailability}),
+      });
+      if (!response.ok){
+        throw new Error('Failed to update option availability')
+      }
+      setOptionData(prevOptionData => {
+        return prevOptionData.map(item => {
+          return item.option_id === optionId ? { ...item, availability: newAvailability } : item;
+        })
+      })
+      console.log('Option availability updated successfully');
+    } catch (error) {
+      console.error('Error toggling option availability', error);
+    }
+  }
+
   const handleToggleStore = async (newState) => {
     try {
       const response = await fetch('http://localhost:3001/updateStoreState', {
@@ -140,7 +183,7 @@ export default function control() {
   }
 
   return (
-    <main className="flex flex-col bg-white">
+    <main className="flex flex-col bg-white scrollbar-hide overflow-auto">
       <div className='flex flex-row h-12 px-4 py-2 items-center justify-between shadow-md'>
         <div className='flex items-center'>
           <h2 className='font-bold'>พี่ช้าง อาหารตามสั่ง</h2>
@@ -156,8 +199,9 @@ export default function control() {
         <div className='flex items-center'>
           <button className=" btn btn-xs text-white font-bold bg-gray-600 mr-2"><a href='/admin/queue'>หน้าคิว</a></button>
           <button className=" btn btn-xs text-white font-bold bg-gray-600 mr-2"><a href='/admin/dashboard'>หน้าข้อมูล</a></button>
+          <button className=" btn btn-xs text-white font-bold bg-gray-600 mr-2"><a href='/admin/slip'>หน้าสลิป</a></button>
           <button className=" btn btn-xs text-white font-bold bg-gray-600 mr-2" onClick={cfgData}> แก้ไข</button>
-          <div className="dropdown dropdown-end">
+          {/* <div className="dropdown dropdown-end">
             <div tabIndex={0} role="button" className="btn-sm flex p-0 items-center">
               <img className='w-auto' src='/account.svg'></img>
             </div>
@@ -165,12 +209,12 @@ export default function control() {
                 <li><a>ข้อมูล</a></li>
                 <li><a>ออกจากระบบ</a></li>
               </ul>
-          </div>
+          </div> */}
         </div>
       </div>
 
-      <div className="overflow-x-auto">
-        <table className="table">
+      <div className="overflow-x-auto h-screen">
+        <table className="table table-pin-rows">
           {/* head */}
           <thead>
             <tr>
@@ -180,6 +224,7 @@ export default function control() {
               <th>พิเศษ</th>
               <th>ไข่</th>
               <th>ภาชนะ</th>
+              <th>เพิ่มเติม</th>
               <th>ออเดอร์รวม</th>
               <th>สถานะ</th>
             </tr>
@@ -197,6 +242,7 @@ export default function control() {
                   existingGroup.spicy.push(item.spicy);
                   existingGroup.extra.push(item.extra);
                   existingGroup.egg.push(item.egg);
+                  existingGroup.optional_text.push(item.optional_text);
                   existingGroup.container.push(item.container);
                 } else {
                   groupedOrder.push({
@@ -209,7 +255,7 @@ export default function control() {
                     spicy: [item.spicy],
                     extra: [item.extra],
                     egg: [item.egg],
-                    optional_text: item.optional_text,
+                    optional_text: [item.optional_text],
                     container: [item.container],
                     queue_id: item.queue_id
                   });
@@ -232,6 +278,7 @@ export default function control() {
                 <td><ExtraList names={order.extra}/></td>
                 <td><List names={order.egg}/></td>
                 <td><List names={order.container}/></td>
+                <td><OptionalList names={order.optional_text}/></td>
                 <td>{order.total_menu}</td>
                 <td className='flex justify-center'>
                   {order.order_status === 'pending' ? (
@@ -354,7 +401,7 @@ export default function control() {
                       type="checkbox"
                       className="toggle toggle-xs toggle-error mr-2"
                       checked={menuItem.availability}
-                      onChange={() => handleToggleAvailability(menuItem.menu_id, event.target.checked)}
+                      onChange={() => handleToggleMenuAvailability(menuItem.menu_id, event.target.checked)}
                     />
                     <p>{menuItem.menu_name}</p>
                   </div>
@@ -365,7 +412,18 @@ export default function control() {
             <div className='flex flex-col'>
               <h2 className='font-bold'>แก้ไขวัตถุดิบ</h2>
               <div className='grid grid-cols-1 gap-y-2 mt-2'>
-                <div className='flex flex-row items-center'>
+                {optionData.map(optionItem => (
+                  <div key={optionItem.option_id} className='flex flex-row items-center'>
+                    <input
+                      type="checkbox"
+                      className="toggle toggle-xs toggle-error mr-2"
+                      checked={optionItem.availability}
+                      onChange={() => handleToggleOptionAvailability(optionItem.option_id, event.target.checked)}
+                    />
+                    <p>{optionItem.option_value}</p>
+                  </div>
+                ))}
+                {/* <div className='flex flex-row items-center'>
                   <input type="checkbox" className="toggle toggle-xs toggle-error mr-2" />
                   <p>หมู</p>
                 </div>
@@ -388,7 +446,7 @@ export default function control() {
                 <div className='flex flex-row items-center'>
                   <input type="checkbox" className="toggle toggle-xs toggle-error mr-2" />
                   <p>ปลาหมึก</p>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
