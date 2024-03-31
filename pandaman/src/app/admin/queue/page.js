@@ -87,7 +87,13 @@ export default function krapow() {
                 <td>{queue.spicy}</td>
                 <td>{queue.extra === "1" ? "✔️" : "❌"}</td>
                 <td>{queue.egg}</td>
-                <td>{queue.optional_text}</td>
+                <td>{queue.optional_text ? (
+                  <div className='tooltip tooltip-right' data-tip={queue.optional_text}>
+                    <img src='/optionalText.svg'></img>
+                  </div>
+                ) : (
+                  <span className='invisible'></span>
+                )}</td>
                 <td>{queue.container}</td>
                 <td>{queue.quantity}</td>
                 <td>{queue.queue_status === 'approved' ? (
