@@ -3,39 +3,32 @@ import React, { useEffect, useState } from 'react'
 
 export default function control() {
 
-  // const [socket, setSocket] = useState(null);
   const [orders, setOrders] = useState([])
   const [refresh, setRefresh] = useState(false)
   const [menuData, setMenuData] = useState([]);
   const [optionData, setOptionData] = useState([]);
   const [storeState, setStoreState] = useState(1);
 
+  const fetchData = () => {
+    Promise.all([
+      fetch('http://localhost:3001/getOrder').then(res => res.json()),
+      fetch('http://localhost:3001/getMenuAvailability').then(res => res.json()),
+      fetch('http://localhost:3001/getStoreState').then(res => res.json()),
+      fetch('http://localhost:3001/getOptionAvailability').then(res => res.json())
+    ]).then(([orders, menuData, storeState, optionData]) => {
+      setOrders(orders)
+      setMenuData(menuData)
+      setStoreState(storeState)
+      setOptionData(optionData)
+    }).catch(error => {
+      console.error('Error fetching data:', error);
+    })
+  }
+
   useEffect(() => {
-    fetch('http://localhost:3001/getOrder')
-    .then((res) => res.json())
-    .then((data) => setOrders(data))
-    fetch('http://localhost:3001/getMenuAvailability')
-    .then((res) => res.json())
-    .then((data) => setMenuData(data))
-    fetch('http://localhost:3001/getStoreState')
-    .then((res) => res.json())
-    .then((data) => setStoreState(data))
-    fetch('http://localhost:3001/getOptionAvailability')
-    .then((res) => res.json())
-    .then((data) => setOptionData(data))
-  }, [refresh])
+    fetchData();
+  }, [refresh]);
 
-  // const sendMessage = (message) => {
-  //   if (socket && socket.readyState === WebSocket.OPEN) {
-  //     socket.send(message);
-  //   } else {
-  //     console.error('WebSocket is not connected');
-  //   }
-  // }
-
-  // const showData = () => {
-  //   document.getElementById('dataModal').showModal();
-  // };
   const cfgData = () => {
     document.getElementById('cfgModal').showModal();
   };
@@ -201,15 +194,6 @@ export default function control() {
           <button className=" btn btn-xs text-white font-bold bg-gray-600 mr-2"><a href='/admin/dashboard'>หน้าข้อมูล</a></button>
           <button className=" btn btn-xs text-white font-bold bg-gray-600 mr-2"><a href='/admin/slip'>หน้าสลิป</a></button>
           <button className=" btn btn-xs text-white font-bold bg-gray-600 mr-2" onClick={cfgData}> แก้ไข</button>
-          {/* <div className="dropdown dropdown-end">
-            <div tabIndex={0} role="button" className="btn-sm flex p-0 items-center">
-              <img className='w-auto' src='/account.svg'></img>
-            </div>
-              <ul tabIndex={0} className="dropdown-content z-[1] menu shadow bg-base-100 rounded-box w-36">
-                <li><a>ข้อมูล</a></li>
-                <li><a>ออกจากระบบ</a></li>
-              </ul>
-          </div> */}
         </div>
       </div>
 
@@ -325,65 +309,6 @@ export default function control() {
         </table>
       </div>
 
-      <dialog id="dataModal" className="modal">
-        <div className="modal-box bg-white flex flex-col p-0 w-full h-3/4">
-          <form method="dialog">
-            <button className="btn btn-xs btn-circle bg-white absolute right-2 top-2">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
-            </button>
-          </form>
-          <div className='grid grid-cols-2 px-4 pt-4'>
-            <div className='flex flex-col '>
-              <h2 className='font-bold'>เมนูขายดี</h2>
-              <div className='mt-2'>
-                <div className='flex flex-row'>
-                <p className='mr-4'>1</p>
-                <p>กระเพรา หมู</p>
-                </div>
-                <div className='flex flex-row mt-2'>
-                <p className='mr-4'>2</p>
-                <p>ผัดกระเทียม ไก่</p>
-                </div>
-                <div className='flex flex-row mt-2'>
-                <p className='mr-4'>3</p>
-                <p>สปาเกตตี้ หมู</p>
-                </div>
-                <div className='flex flex-row mt-2'>
-                <p className='mr-4'>4</p>
-                <p>ผัดกระเทียม หมู</p>
-                </div>
-                <div className='flex flex-row mt-2'>
-                <p className='mr-4'>5</p>
-                <p>ผัดกระเทียม กุ้ง</p>
-                </div>
-                <div className='flex flex-row mt-2'>
-                <p className='mr-4'>6</p>
-                <p>กระเพรา หมูกรอบ</p>
-                </div>
-              </div>
-            </div>
-
-            <div className='flex flex-col'>
-              <h2 className='font-bold'>วัตถุดิบที่ใช้ในวันนี้</h2>
-              <div className='grid grid-cols-2 gap-y-2 mt-2'>
-                <p>หมูกรอบ</p>
-                <p>18 จาน</p>
-                <p>หมู</p>
-                <p>16 จาน</p>
-                <p>เบค่อน</p>
-                <p>16 จาน</p>
-                <p>ไก่</p>
-                <p>15 จาน</p>
-                <p>กุ้ง</p>
-                <p>10 จาน</p>
-                <p>ปลาหมึก</p>
-                <p>8 จาน</p>
-              </div>
-            </div>
-          </div> 
-        </div>
-      </dialog>
-
       <dialog id="cfgModal" className="modal">
         <div className="modal-box bg-white flex flex-col py-4 px-8 h-3/4 w-auto max-w-none">
           <form method="dialog">
@@ -423,30 +348,6 @@ export default function control() {
                     <p>{optionItem.option_value}</p>
                   </div>
                 ))}
-                {/* <div className='flex flex-row items-center'>
-                  <input type="checkbox" className="toggle toggle-xs toggle-error mr-2" />
-                  <p>หมู</p>
-                </div>
-                <div className='flex flex-row items-center'>
-                  <input type="checkbox" className="toggle toggle-xs toggle-error mr-2" />
-                  <p>ไก่</p>
-                </div>
-                <div className='flex flex-row items-center'>
-                  <input type="checkbox" className="toggle toggle-xs toggle-error mr-2" />
-                  <p>หมูกรอบ</p>
-                </div>
-                <div className='flex flex-row items-center'>
-                  <input type="checkbox" className="toggle toggle-xs toggle-error mr-2" />
-                  <p>เบค่อน</p>
-                </div>
-                <div className='flex flex-row items-center'>
-                  <input type="checkbox" className="toggle toggle-xs toggle-error mr-2" />
-                  <p>กุ้ง</p>
-                </div>
-                <div className='flex flex-row items-center'>
-                  <input type="checkbox" className="toggle toggle-xs toggle-error mr-2" />
-                  <p>ปลาหมึก</p>
-                </div> */}
               </div>
             </div>
           </div>

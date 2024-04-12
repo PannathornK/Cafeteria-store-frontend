@@ -10,21 +10,6 @@ export default function krapow() {
     fetch('http://localhost:3001/getQueue')
       .then((res) => res.json())
       .then((data) => setQueues(data));
-    
-    // const socket = new WebSocket('ws://localhost:3001');
-  
-    // socket.addEventListener('message', (event) => {
-    //   console.log(event.data);
-    //   if(event.data === 'up')handleMoveUp();
-    //   if(event.data === 'down')handleMoveDown();
-    //   if(event.data === 'accept')changeStatus("cooking", "approved");
-    //   if(event.data === 'finish')changeStatus("finished", "finished");
-    //   if(event.data === 'cancel')changeStatus("cancelled", "rejected");
-    // })
-    
-    // return () => {
-    //   socket.close();
-    // }
   }, [refresh]);
   
   const changeStatus = async (queueId, status) => {

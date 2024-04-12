@@ -8,16 +8,22 @@ export default function dashboard() {
   const [bestSelling, setBestSelling] = useState([]);
   const [ingredientUsed, setIngredientUsed] = useState([]);
 
+  const fetchData = () => {
+    Promise.all([
+      fetch('http://localhost:3001/getTodaySales').then((res) => res.json()),
+      fetch('http://localhost:3001/getBestSellingMenu').then((res) => res.json()),
+      fetch('http://localhost:3001/getIngredientsUsed').then((res) => res.json())
+    ]).then(([todaySales, bestSelling, ingredientUsed]) => {
+      setTodaySales(todaySales);
+      setBestSelling(bestSelling);
+      setIngredientUsed(ingredientUsed);
+    }).catch(error => {
+      console.error('Error fetching data:', error);
+    })
+  }
+
   useEffect(() => {
-    fetch('http://localhost:3001/getTodaySales')
-      .then((res) => res.json())
-      .then((data) => setTodaySales(data));
-    fetch('http://localhost:3001/getBestSellingMenu')
-      .then((res) => res.json())
-      .then((data) => setBestSelling(data));
-    fetch('http://localhost:3001/getIngredientsUsed')
-      .then((res) => res.json())
-      .then((data) => setIngredientUsed(data));
+    fetchData();
   }, []);
 
 

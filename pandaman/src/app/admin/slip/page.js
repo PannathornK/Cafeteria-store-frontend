@@ -43,7 +43,7 @@ export default function slip() {
                     <tr key={slip.payment_id}>
                         <th>{index + 1}</th>
                         <td>{slip.order_id}</td>
-                        <td><a href={slip.payment_picture} target="_blank" className='text-blue-500 hover:text-blue-700 underline'>หลักฐาน</a></td>
+                        <td><a href={slip.payment_picture} target="_blank" className='text-blue-500 hover:text-blue-700 underline'>สลิป</a></td>
                         <td>{formattedDateTime}</td>
                         <td>{slip.total_price}</td>
                     </tr>
